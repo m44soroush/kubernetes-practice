@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: anisa
+  labels:
+    app: my-fpm
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: my-fpm
+  template:
+    metadata:
+      labels:
+        app: my-fpm
+    spec:
+      containers:
+        - name: nginx
+          image: dockerhub.ir/nginx:alpine
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: nginx-conf
+              mountPath: /etc/nginx/conf.d
+            - name: app-code
+              mountPath: /app
+        - name: php
+          image: dockerhub.ir/php:fpm-alpine
+          volumeMounts:
+            - name: app-code
+              mountPath: /app
+      volumes:
+        - name: app-code
+          hostPath:
+            path: /root/php-app/app
+        - name: nginx-conf
+          hostPath:
+            path: /root/php-app/conf

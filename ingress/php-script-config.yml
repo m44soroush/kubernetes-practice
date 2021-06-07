@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: php-script
+data:
+  index.php: |
+    <?php
+    echo "<pre>";
+    echo "Time: " . date("H:i:s") . "\n";
+    echo "Pod name: " . gethostname() . "\n";
+    echo "Pod ip: " . $_SERVER['SERVER_ADDR'] . "\n";
+    echo "</pre>";
+    ?>
